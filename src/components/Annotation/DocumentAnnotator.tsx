@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 
 import AnnotatedDocumentViewer from "./AnnotatedDocumentViewer";
 import apiTerminal from "../../server/apiTerminal";
+import { AnnotatedDocument } from "../../types/types";
+import NewAnnotatedDocumentViewer from "./NewAnnotatedDocumentViewer";
 
 const DocumentAnnotator = (): JSX.Element => {
   const defaultTextPlaceholder =
     "Alan Turing was born on 23/06/1912. During the Second World War, he worked as a scientist for the Government Code and Cypher School (currently GCHQ) at Bletchley Park, Britain's codebreaking centre that produced Ultra intelligence.";
 
-  const emptyDocument = { text: "" };
+  const emptyAnnotatedDoc = { text: "", mentions: [] };
 
   const [inputValue, setInputValue] = useState(defaultTextPlaceholder);
-  const [annotatedDoc, setAnnotatedDoc] = useState(emptyDocument);
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [annotatedDocResponse, setAnnotatedDocResposne] =
+    useState<AnnotatedDocument>(emptyAnnotatedDoc);
 
   const handleCloseModal = () => {
     setShowErrorModal(false);
@@ -24,7 +27,7 @@ const DocumentAnnotator = (): JSX.Element => {
   const analyzeInput = async () => {
     try {
       const res = await apiTerminal.analyzeInput(inputValue);
-      setAnnotatedDoc(res);
+      setAnnotatedDocResposne(res);
       console.log(res);
     } catch (err) {
       console.error(err);
@@ -56,7 +59,7 @@ const DocumentAnnotator = (): JSX.Element => {
           </Form>
         </Col>
         <Col>
-          <AnnotatedDocumentViewer document={annotatedDoc} />
+          <NewAnnotatedDocumentViewer document={annotatedDocResponse} />
         </Col>
       </Row>
 
