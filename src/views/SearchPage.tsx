@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
-import SearchResult from "../components/SearchResult";
+import SearchResult from "../components/Search/SearchResult";
 import { Link } from "react-router-dom";
 import apiTerminal from "../server/apiTerminal";
 
