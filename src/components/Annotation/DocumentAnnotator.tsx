@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { Row, Col, Form, Button, Modal } from "react-bootstrap";
-
-import AnnotatedDocumentViewer from "./AnnotatedDocumentViewer";
 import apiTerminal from "../../server/apiTerminal";
 import { AnnotatedDocument } from "../../types/types";
 import NewAnnotatedDocumentViewer from "./NewAnnotatedDocumentViewer";
+import axios, { AxiosError } from "axios";
+import { parseBackendError } from "../../utils/parseErrorUtil";
 
 const DocumentAnnotator = (): JSX.Element => {
   const defaultTextPlaceholder =
@@ -27,11 +26,11 @@ const DocumentAnnotator = (): JSX.Element => {
   const analyzeInput = async () => {
     try {
       const res = await apiTerminal.analyzeInput(inputValue);
+      console.log("Response from server:", res);
       setAnnotatedDocResposne(res);
-      console.log(res);
-    } catch (err) {
-      console.error(err);
-      setErrorMessage("Annotation failed. Please try again.");
+    } catch (err: any) {
+      const { error } = parseBackendError(err, "Annotation failed.");
+      setErrorMessage(error);
       setShowErrorModal(true);
     }
   };

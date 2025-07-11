@@ -75,7 +75,7 @@ const performRequest = async (
     });
     return response.data;
   } catch (error) {
-    console.error("An unexpected error occurred", error);
-    throw new Error("An unexpected error occurred");
+    console.log("An unexpected error occurred", error);
+    throw error;
   }
 };

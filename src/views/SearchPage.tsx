@@ -14,6 +14,7 @@ import queryString from "query-string";
 import SearchResult from "../components/Search/SearchResult";
 import { Link } from "react-router-dom";
 import apiTerminal from "../server/apiTerminal";
+import { parseBackendError } from "../utils/parseErrorUtil";
 
 let getStringValue = (
   obj: string | string[] | null | undefined,
@@ -65,8 +66,8 @@ const SearchPage: React.FC<{}> = () => {
       const res = await apiTerminal.search(t, q);
       setSearchResultInstance(res.length > 0 ? res[0] : undefined);
     } catch (err) {
-      console.error("Search failed:", err);
-      setErrorMessage("Search failed. Please try again later.");
+      const { error } = parseBackendError(err, "Annotation failed.");
+      setErrorMessage(error);
       setShowErrorModal(true);
     }
   };
@@ -143,17 +144,13 @@ const SearchPage: React.FC<{}> = () => {
             No {definedSearchType} matches found for "{definedSearchQuery}"
           </Alert>
         ))}
-      <Modal
-        show={showErrorModal}
-        onHide={() => setShowErrorModal(false)}
-        centered
-      >
+      <Modal show={showErrorModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
         </Modal.Header>
         <Modal.Body>{errorMessage}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+          <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
         </Modal.Footer>

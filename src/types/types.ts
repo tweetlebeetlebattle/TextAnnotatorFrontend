@@ -12,3 +12,7 @@ export interface AnnotatedDocument {
 }
 
 export type AnnotationController = boolean[];
+
+export type BackendErrorResponse = {
+  error: string;
+};
