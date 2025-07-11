@@ -23,24 +23,6 @@ export const fetch = async (path: string, authorization?: string) => {
   return performRequest("GET", path, undefined, undefined, authorization);
 };
 
-interface ServerExceptionProps {
-  status: number;
-  message: string;
-  title?: string;
-}
-
-class ServerException extends Error {
-  public status: number;
-  public title?: string;
-
-  constructor({ status, message, title }: ServerExceptionProps) {
-    super(message);
-    this.status = status;
-    this.name = "ServerException";
-    this.title = title;
-  }
-}
-
 const performRequest = async (
   method: Method,
   path: string,
@@ -61,12 +43,6 @@ const performRequest = async (
   }
 
   try {
-    console.log(
-      `Performing ${method} request to ${BASE_URL}${path} authorisation${authorization}`,
-      {
-        body,
-      }
-    );
     const response = await axios({
       method,
       url: `${BASE_URL}${path}`,
@@ -75,7 +51,6 @@ const performRequest = async (
     });
     return response.data;
   } catch (error) {
-    console.log("An unexpected error occurred", error);
     throw error;
   }
 };

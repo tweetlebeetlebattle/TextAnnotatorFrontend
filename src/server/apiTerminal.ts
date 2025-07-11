@@ -1,9 +1,4 @@
 import { fetch, post } from "./serverClient";
-// add something simillar depending on authentication requirements
-// const getToken = (): string | undefined => {
-//   const auth = localStorage.getItem("auth");
-//   return auth ? JSON.parse(auth).token : undefined;
-// };
 
 const apiTerminal = {
   search: async (searchType: string, query: string) => {

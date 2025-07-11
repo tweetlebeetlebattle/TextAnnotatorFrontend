@@ -3,7 +3,6 @@ import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 import apiTerminal from "../../server/apiTerminal";
 import { AnnotatedDocument } from "../../types/types";
 import NewAnnotatedDocumentViewer from "./NewAnnotatedDocumentViewer";
-import axios, { AxiosError } from "axios";
 import { parseBackendError } from "../../utils/parseErrorUtil";
 
 const DocumentAnnotator = (): JSX.Element => {
